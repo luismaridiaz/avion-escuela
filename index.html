@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Simulador — cabina + exterior (v2 · terreno real + mapa)</title>
+<title>Escuela de Vuelo Norte</title>
 <script>
 // Cazador de errores visible en pantalla — para depurar sin acceso a consola/inspector.
 (function () {
@@ -140,44 +140,20 @@ input[type=range]{width:100%;height:4px;-webkit-appearance:none;background:var(-
   .mapStrip{flex-basis:calc(130px + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom)}
 }
 
-/* Cabina: relojes realistas a todo el ancho, sin banda de datos, mandos centrados (móvil y ordenador); mapa en un lado de la vista exterior */
-.pack,#sixPack{display:none}
-.touch{display:block}
-.maplibregl-ctrl-attrib,.maplibregl-ctrl-bottom-right,.maplibregl-ctrl-bottom-left{display:none !important}
-.gauges{position:absolute;top:6px;left:4px;right:4px;display:flex;gap:4px;z-index:7;pointer-events:none;justify-content:center}
-.gauges .gg{width:min(calc((100% - 8px)/6), 78px);text-align:center}
-.gauges canvas{width:100%;height:auto;aspect-ratio:1;border-radius:50%;display:block;box-shadow:0 1px 4px rgba(0,0,0,.6)}
+#sixPack{display:none}
+.gauges{position:absolute;left:50%;transform:translateX(-50%);bottom:56px;display:flex;gap:4px;z-index:7;pointer-events:none}
+.gauges .gg{width:54px;text-align:center}
+.gauges canvas{width:54px;height:54px;border-radius:50%;display:block;box-shadow:0 1px 4px rgba(0,0,0,.6)}
 .gauges span{display:block;font:700 7px var(--mono);color:#9fb3cf;margin-top:1px;text-shadow:0 1px 2px #000;white-space:nowrap}
 .hud.night .gauges canvas{box-shadow:0 0 8px rgba(255,160,60,.4)}
-.warn{top:100px}
-.rollarc{top:calc(16% + 50px)}
-.ladder{top:calc(42% + 50px)}
-.mapStrip{position:absolute;right:8px;top:8px;left:auto;bottom:auto;width:clamp(92px,26vw,140px);height:clamp(92px,26vw,140px);flex:none;padding:0;border:2px solid var(--bd);border-radius:8px;overflow:hidden;z-index:5}
-.mapStrip{cursor:pointer;transition:width .25s,height .25s}
-.mapStrip.big{width:clamp(184px,52vw,280px);height:clamp(184px,52vw,280px)}
-.mapStrip .mlAttrib{font-size:7px;left:2px;top:2px;padding:0 3px;z-index:3}
-.pad-lb{position:absolute;right:calc(100% + 8px);top:50%;transform:translateY(-50%);font:700 9px var(--mono);letter-spacing:1px;color:rgba(190,220,245,.85);text-shadow:0 1px 2px #000;pointer-events:none;white-space:nowrap}
-.thr-pad{left:50%;transform:translateX(-50%);width:min(190px,calc(100% - 200px));height:40px;bottom:calc(14px + env(safe-area-inset-bottom));border-radius:20px}
-.thr-pad .pad-lb{right:16px;color:rgba(190,220,245,.6)}
-.thr-knob{top:3px;bottom:auto;left:4px;width:34px;height:34px}
-.stick-pad{left:50%;transform:translateX(-50%);right:auto;bottom:calc(76px + env(safe-area-inset-bottom));width:min(120px,26dvh);height:min(120px,26dvh)}
-.pedal{position:absolute;z-index:12;touch-action:none;pointer-events:auto;bottom:calc(8px + env(safe-area-inset-bottom));width:78px;height:84px;border-radius:12px;background:repeating-linear-gradient(0deg,#1a212d 0 5px,#222b39 5px 7px);border:2px solid #5b6b82;overflow:hidden;font:700 8px var(--mono);text-align:center;color:#9fb3cf}
-.pedal.pl{left:8px}.pedal.pr{right:8px}
-.pedal .toe{height:38%;background:rgba(239,83,80,.28);border-bottom:2px solid #ef5350;color:#ffb4b2;line-height:30px;letter-spacing:1px}
-.pedal .trd{height:62%;line-height:50px;letter-spacing:1px}
-.pedal.rud{border-color:#f0b429;background:#2b3345;transform:translateY(2px)}
-.pedal.rud .trd{color:#f0b429}
-.pedal.brk{border-color:#ef5350}
-.pedal.brk .toe{background:#ef5350;color:#fff}
 @media(max-width:900px){
-  .gauges{gap:3px}
-  .gauges .gg{width:min(calc((100% - 8px)/6), 17dvh)}
-  .gauges span{font-size:7px}
-  .warn{top:calc(var(--gh,70px) + 24px)}
-  .rollarc{top:calc(16% + 36px)}
-  .ladder{top:calc(42% + 36px)}
+  .gauges{bottom:auto;top:6px;left:4px;right:4px;transform:none;justify-content:center;gap:2px}
+  .gauges .gg{width:calc((100vw - 8px)/8 - 2px);max-width:50px}
+  .gauges canvas{width:100%;height:auto;aspect-ratio:1}
+  .gauges span{font-size:6px}
+  .warn{top:62px}
+  .rollarc{top:24%}
 }
-
 /* Mandos v4: volante, timón y frenos a la izquierda; palancas verticales (gas negra, mezcla roja, flaps) a la derecha */
 .thr-pad,.pedal{display:none !important}
 .stick-pad{left:10px;transform:none;right:auto;bottom:calc(106px + env(safe-area-inset-bottom))}
@@ -198,6 +174,13 @@ input[type=range]{width:100%;height:4px;-webkit-appearance:none;background:var(-
 .lev .tk{position:absolute;right:calc(100% + 2px);transform:translateY(-50%);font:700 7px var(--mono);font-style:normal;color:#9fb3cf;text-shadow:0 1px 2px #000;pointer-events:none}
 .lev-k.blu{background:radial-gradient(circle at 35% 30%,#7ab8ff,#0d4aa8);border:2px solid #a9d0ff}
 .lev-k.wht{background:radial-gradient(circle at 35% 30%,#fff,#aeb7c4);border:2px solid #e6ebf2}
+.touch{display:block}
+@media(max-width:900px){.brk-grp{bottom:calc(62px + env(safe-area-inset-bottom))}.rud-grp{bottom:calc(22px + env(safe-area-inset-bottom))}.lev-grp{bottom:calc(22px + env(safe-area-inset-bottom))}.stick-pad{bottom:calc(120px + env(safe-area-inset-bottom))}}
+.brk,.rud,.lev,.mapStrip .mlAttrib{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+/* la banda de datos de escuela se conserva: los mandos suben por encima de ella */
+.brk-grp,.rud-grp,.lev-grp,.stick-pad{margin-bottom:50px}
+.tape{top:30%}
+@media(max-width:900px){.brk-grp,.rud-grp,.lev-grp,.stick-pad{margin-bottom:84px}}
 </style>
 </head>
 <body>
@@ -271,13 +254,9 @@ input[type=range]{width:100%;height:4px;-webkit-appearance:none;background:var(-
     </div>
   </div>
   <div class="right">
-    <div class="ext" id="extWrap"><canvas id="exteriorCanvas"></canvas>
-      <div class="mapStrip">
-        <span class="mlAttrib" title="Mapa: OpenFreeMap / OpenStreetMap · Relieve: IGN España">© OSM · IGN</span>
-        <div id="maplibreMap" style="width:100%;height:100%"></div>
-      </div>
-    </div>
+    <div class="ext" id="extWrap"><canvas id="exteriorCanvas"></canvas></div>
     <div class="ctl">
+      <p style="color:var(--accent);font:700 10px ui-monospace,Consolas,monospace;letter-spacing:2px;margin:0 0 2px">ESCUELA DE VUELO NORTE</p>
       <p id="typeBadge2" style="color:#fff;font:700 14px ui-monospace,Consolas,monospace;margin:0 0 8px">C172 · A</p>
       <div class="views">
         <button id="vwSplit" class="on">Split</button>
@@ -376,6 +355,10 @@ input[type=range]{width:100%;height:4px;-webkit-appearance:none;background:var(-
       </div>
     </div>
   </div>
+</div>
+<div class="mapStrip">
+  <span class="mlAttrib">Mapa: OpenFreeMap · Relieve: IGN España</span>
+  <div id="maplibreMap" style="width:100%;height:100%"></div>
 </div>
 <script>
 /**
@@ -2081,7 +2064,82 @@ if (typeof module !== 'undefined' && module.exports) module.exports = AviationEn
     return tex;
   }
 
+
+  /* ===== Modelos 3D del Arrow y del L-39, tomados de arrow-trainer y l39-trainer =====
+     En esas apps el morro apunta a -Z; aquí es +X, por eso todo va en un grupo girado -90° en Y. */
+  function buildTrainerPlane(kind) {
+    const g = new THREE.Group(), body = new THREE.Group();
+    g.add(body);
+    const wrap = new THREE.Group(); wrap.rotation.y = -Math.PI / 2; body.add(wrap);
+    const gearG = new THREE.Group(); wrap.add(gearG);
+    const L = c => new THREE.MeshLambertMaterial({ color: c });
+    const tyre = L(0x14181d);
+    function mkLeg(x, y, z, len, legMat, w) {
+      const gr = new THREE.Group(); gr.position.set(x, y, z);
+      const l = new THREE.Mesh(new THREE.BoxGeometry(w.leg, len, w.leg), legMat); l.position.y = -len / 2; gr.add(l);
+      const wh = new THREE.Mesh(new THREE.CylinderGeometry(w.r, w.r, w.wd, 12), tyre); wh.rotation.z = Math.PI / 2; wh.position.y = -len; gr.add(wh);
+      gearG.add(gr); return gr;
+    }
+    let prop = new THREE.Group();
+    if (kind === 'pa28') {
+      // Piper Arrow III: ala baja, tren retráctil, hélice de paso constante
+      const white = L(0xeceff3), red = L(0xb3261e), dark = L(0x2a3038), glass = L(0x2e5c86), leg = L(0x9aa2ad);
+      const add = (geo, mat, x, y, z) => { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); wrap.add(m); return m; };
+      add(new THREE.BoxGeometry(1.1, 1.15, 5.6), white, 0, 0.05, 0.5);
+      add(new THREE.BoxGeometry(1.14, 0.16, 5.62), red, 0, 0.0, 0.5);
+      const nose = add(new THREE.CylinderGeometry(0.52, 0.4, 1.7, 12), white, 0, -0.05, -3.1); nose.rotation.x = Math.PI / 2;
+      add(new THREE.BoxGeometry(1.12, 0.55, 1.9), glass, 0, 0.62, -0.55);
+      add(new THREE.BoxGeometry(0.55, 0.62, 2.6), white, 0, 0.28, 3.9);
+      add(new THREE.BoxGeometry(10.82, 0.16, 1.6), white, 0, -0.5, 0.1);
+      add(new THREE.BoxGeometry(10.84, 0.05, 0.35), red, 0, -0.43, -0.55);
+      add(new THREE.BoxGeometry(3.9, 0.12, 1.05), white, 0, 0.42, 4.75);
+      add(new THREE.BoxGeometry(0.12, 1.45, 1.35), white, 0, 1.05, 4.45);
+      add(new THREE.BoxGeometry(0.14, 0.45, 0.9), red, 0, 1.62, 4.55);
+      const W = { leg: 0.1, r: 0.3, wd: 0.2 };
+      mkLeg(0, -0.3, -2.4, 0.78, leg, W); mkLeg(-1.45, -0.55, 0.25, 0.55, leg, W); mkLeg(1.45, -0.55, 0.25, 0.55, leg, W);
+      const spin = add(new THREE.ConeGeometry(0.2, 0.4, 10), dark, 0, -0.05, -4.15); spin.rotation.x = -Math.PI / 2;
+      wrap.position.set(-0.30, 0.35, 0); // ruedas principales en x=-0.55 (como el motor) y a -gearH del origen
+      prop = new THREE.Group(); // la hélice gira sobre el eje del morro (+X del avión)
+      prop.add(new THREE.Mesh(new THREE.BoxGeometry(0.06, 1.9, 0.12), dark));
+      prop.position.set(4.35 - 0.30, -0.05 + 0.35, 0); body.add(prop);
+    } else {
+      // Aero L-39 Albatros: reactor, cabina en tándem, tomas laterales, depósitos de punta
+      const grey = L(0xc9ced4), olive = L(0x4a6a35), dark = L(0x23282d), glass = L(0x35607f), leg = L(0xa7adb5);
+      const add = (geo, mat, x, y, z) => { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); wrap.add(m); return m; };
+      const cylZ = (r0, r1, len, mat, x, y, z) => { const m = new THREE.Mesh(new THREE.CylinderGeometry(r1, r0, len, 14), mat); m.rotation.x = Math.PI / 2; m.position.set(x, y, z); wrap.add(m); return m; };
+      cylZ(0.18, 0.62, 2.6, grey, 0, 0.00, -4.6);
+      add(new THREE.BoxGeometry(1.25, 1.15, 4.4), grey, 0, 0.00, -1.0);
+      add(new THREE.BoxGeometry(1.20, 1.00, 3.2), grey, 0, 0.00, 2.4);
+      cylZ(0.62, 0.38, 3.2, grey, 0, 0.05, 5.5);
+      cylZ(0.34, 0.30, 0.5, dark, 0, 0.05, 7.3);
+      add(new THREE.BoxGeometry(1.27, 0.14, 10.0), olive, 0, 0.22, 0.6);
+      add(new THREE.BoxGeometry(0.95, 0.62, 1.35), glass, 0, 0.78, -2.5);
+      add(new THREE.BoxGeometry(0.95, 0.72, 1.45), glass, 0, 0.88, -0.95);
+      add(new THREE.BoxGeometry(1.0, 0.1, 0.12), dark, 0, 0.64, -1.75);
+      add(new THREE.BoxGeometry(0.42, 0.62, 1.7), dark, -0.82, -0.02, 0.35);
+      add(new THREE.BoxGeometry(0.42, 0.62, 1.7), dark, 0.82, -0.02, 0.35);
+      add(new THREE.BoxGeometry(8.5, 0.14, 2.4), grey, 0, -0.22, 0.6);
+      add(new THREE.BoxGeometry(8.5, 0.05, 0.5), olive, 0, -0.14, -0.35);
+      [-1, 1].forEach(sg => {
+        cylZ(0.30, 0.30, 3.0, grey, sg * 4.45, -0.22, 0.7);
+        cylZ(0.30, 0.06, 0.9, grey, sg * 4.45, -0.22, -1.25);
+        cylZ(0.06, 0.30, 0.9, grey, sg * 4.45, -0.22, 2.65);
+        cylZ(0.31, 0.31, 0.4, olive, sg * 4.45, -0.22, 0.7);
+      });
+      add(new THREE.BoxGeometry(0.14, 1.9, 1.9), grey, 0, 1.35, 5.7);
+      add(new THREE.BoxGeometry(0.16, 0.5, 1.0), olive, 0, 2.05, 5.9);
+      add(new THREE.BoxGeometry(3.7, 0.12, 1.3), grey, 0, 0.45, 6.3);
+      const W = { leg: 0.11, r: 0.34, wd: 0.22 };
+      mkLeg(0, -0.45, -3.1, 0.66, leg, W); mkLeg(-1.25, -0.40, 0.9, 0.70, leg, W); mkLeg(1.25, -0.40, 0.9, 0.70, leg, W);
+      wrap.position.set(0.35, 0.10, 0); // ruedas principales en x=-0.55 y a -gearH del origen
+    }
+    return { group: g, prop, gear: gearG };
+  }
   function makePlane(kind) {
+    return (kind === 'pa28' || kind === 'extra') ? buildTrainerPlane(kind) : makePlaneBasic(kind);
+  }
+
+  function makePlaneBasic(kind) {
     const specs = {
       c172: { base: '#f4f6f8', accent: '#1e6fd9', trim: '#0d3d80', span: 11, wingY: 0.42, fuse: 6.2, label: 'EC-172' },
       pa28: { base: '#f4f6f8', accent: '#c9820a', trim: '#5d4037', span: 9.14, wingY: -0.14, fuse: 6.0, label: 'EC-ARR' },
@@ -2185,6 +2243,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = AviationEn
     body.add(gear);
     return { group: g, prop, gear };
   }
+
 
   /* ===== Relojes: cada avión usa los de su app de origen (c172-v2, arrow-trainer, l39-trainer) ===== */
   const GAUGE_SETS = {
@@ -3338,9 +3397,10 @@ function gaugeVSI(cv, fpm){
     })()
   };
   const GAUGE_LAYOUT = {
-    c172: [['ASI','IAS kt'],['ATT','ACTITUD'],['ALT','ALT ft'],['TC','G. VIRAJE'],['HDG','RUMBO'],['VSI','V/S fpm']]
+    c172: [['ASI','IAS kt'],['ATT','ACTITUD'],['ALT','ALT ft'],['TC','G. VIRAJE'],['HDG','RUMBO'],['VSI','V/S fpm'],['RPM','RPM']],
+    pa28: [['ASI','IAS kt'],['ATT','ACTITUD'],['ALT','ALT ft'],['TC','G. VIRAJE'],['HDG','RUMBO'],['VSI','V/S fpm'],['RPM','RPM'],['MP','MP inHg']],
+    extra: [['ASI','IAS kt'],['ATT','ACTITUD'],['ALT','ALT ft'],['TC','G. VIRAJE'],['HDG','RUMBO'],['VSI','V/S fpm'],['RPM','RPM %'],['EGT','EGT °C']]
   };
-  GAUGE_LAYOUT.pa28 = GAUGE_LAYOUT.c172; GAUGE_LAYOUT.extra = GAUGE_LAYOUT.c172;
   let gaugeKind = 'c172', gaugeCv = {}, gaugeLast = 0;
   function buildGaugeRow(kind) {
     const row = document.getElementById('gaugeRow');
@@ -3350,7 +3410,7 @@ function gaugeVSI(cv, fpm){
     gaugeCv = {};
     GAUGE_LAYOUT[gaugeKind].forEach(([key, label]) => {
       const d = document.createElement('div'); d.className = 'gg';
-      const c = document.createElement('canvas'); c.width = 180; c.height = 180;
+      const c = document.createElement('canvas'); c.width = 140; c.height = 140;
       const sp = document.createElement('span'); sp.textContent = label;
       d.appendChild(c); d.appendChild(sp); row.appendChild(d);
       gaugeCv[key] = c;
@@ -3367,8 +3427,19 @@ function gaugeVSI(cv, fpm){
     G.TC(gaugeCv.TC, st.p, slip);
     G.HDG(gaugeCv.HDG, st.psi);
     G.VSI(gaugeCv.VSI, fl.hdot * 196.85);
+    if (gaugeKind === 'extra') {
+      const N = rpm / 27; // el motor del simulador guarda N1 como fracción×2700
+      G.RPM(gaugeCv.RPM, N);
+      G.EGT(gaugeCv.EGT, 360 + 330 * Math.pow(clampG((N - 62) / 38, 0, 1.04), 1.2) - 0.0012 * hM * 3.28084 * 0.3048);
+    } else {
+      G.RPM(gaugeCv.RPM, rpm);
+      if (gaugeKind === 'pa28') { // MP aproximada: 29,92·e^(-h/8500) y gas lineal (misma fórmula que la app del Arrow)
+        const amb = 29.92 * Math.exp(-Math.max(0, hM) / 8500);
+        const th = clampG(pr.thr != null ? pr.thr : ac.controls.throttle, 0, 1);
+        G.MP(gaugeCv.MP, rpm < 100 ? amb : Math.max(amb * 0.22, amb * 0.4 + (amb - 1.3 - amb * 0.4) * th));
+      }
+    }
   }
-
 
   const cockpitScene = world();
   const exteriorScene = world();
@@ -3795,7 +3866,7 @@ function gaugeVSI(cv, fpm){
       if (RealTerrain.active !== icao) return; // el usuario cambió de sitio antes de terminar
       $('terrStatus').textContent = 'Relieve real cargado: ' + entry.meta.name + ' (' + entry.meta.side_km + ' km, ' + Math.round(entry.meta.meters_per_pixel) + ' m/px). Cargando imagen y carreteras…';
       if (window.refreshTerrainVisual) window.refreshTerrainVisual();
-      if (mlMap) mlMap.jumpTo({ center: [entry.meta.field_lon, entry.meta.field_lat], zoom: 12 });
+      if (mlMap) mlMap.jumpTo({ center: [entry.meta.field_lon, entry.meta.field_lat], zoom: 11 });
       // Satélite y carreteras son una mejora opcional aparte: si no existen
       // (aún no has corrido fetch_terrain_v2.py) o fallan, el relieve por
       // altura ya cargado sigue funcionando exactamente igual, sin romperse.
@@ -3970,7 +4041,7 @@ function gaugeVSI(cv, fpm){
       const rw = RegionTerrain.getRunway(icao);
       regionBase = icao;
       addRegionRunways();
-      try { if (mlMap) mlMap.jumpTo({ center: [REGION_AIRPORTS[icao].lon, REGION_AIRPORTS[icao].lat], zoom: 12 }); } catch (e) {}
+      try { if (mlMap) mlMap.jumpTo({ center: [REGION_AIRPORTS[icao].lon, REGION_AIRPORTS[icao].lat], zoom: 11 }); } catch (e) {}
       return loadRegionAround(rw.aimX, rw.aimZ);
     }).then(() => {
       _regionUpdateBusy = false;
@@ -4035,8 +4106,8 @@ function gaugeVSI(cv, fpm){
     planeExt = makePlane(id);
     exteriorScene.add(planeExt.group);
     buildGaugeRow(id);
-    $('levMix').classList.toggle('hide', !!ac.prop.isJet);                 // el reactor no tiene mezcla
-    $('levPrp').classList.toggle('hide', !ac.prop.cs);                      // solo hélice de paso variable (Arrow)
+    $('levMix').classList.toggle('hide', !!ac.prop.isJet);
+    $('levPrp').classList.toggle('hide', !ac.prop.cs);
     ['c172','pa28','extra'].forEach(t => $('tp-' + t).classList.toggle('on', t === id));
     syncSliders();
     badge();
@@ -4054,7 +4125,7 @@ function gaugeVSI(cv, fpm){
     cockpitCam.updateProjectionMatrix();
     hz.visible = fidelity === 'C';
     paniniOn = paniniOK && fidelity === 'C';
-    try { localStorage.setItem('avionPrefs', JSON.stringify({ fidelity, typeId, light: currentLight })); } catch (e) {}
+    try { localStorage.setItem('escuelaPrefs', JSON.stringify({ fidelity, typeId, light: currentLight })); } catch (e) {}
     badge();
   }
   $('fidA').onclick = () => setFid('A');
@@ -4231,7 +4302,7 @@ function gaugeVSI(cv, fpm){
       if (o.material && o.material.emissive) o.material.emissiveIntensity = 0.15 + P.cabin * 0.7;
     });
     try {
-      localStorage.setItem('avionPrefs', JSON.stringify({ fidelity, typeId, light: currentLight }));
+      localStorage.setItem('escuelaPrefs', JSON.stringify({ fidelity, typeId, light: currentLight }));
     } catch (e) {}
   }
   $('litDay').onclick = () => setLight('day');
@@ -4438,7 +4509,7 @@ function gaugeVSI(cv, fpm){
     mlMap = new maplibregl.Map({
       container: 'maplibreMap',
       style: 'https://tiles.openfreemap.org/styles/bright',
-      center: [-3.7, 43], zoom: 9.5, attributionControl: false, interactive: false, fadeDuration: 0, maxTileCacheSize: 200, pixelRatio: Math.min(3, Math.max(2, window.devicePixelRatio || 1))
+      center: [-3.7, 43], zoom: 6.3, attributionControl: true
     });
     mlMap.on('load', () => {
       // El marcador se crea SIEMPRE primero — si el relieve/hillshade de IGN
@@ -4461,15 +4532,6 @@ function gaugeVSI(cv, fpm){
       }
     });
   }
-  (function () {
-    const ms = document.querySelector('.mapStrip');
-    if (!ms) return;
-    ms.addEventListener('click', () => {
-      ms.classList.toggle('big');
-      const rs = () => { try { if (mlMap) mlMap.resize(); } catch (e) {} };
-      setTimeout(rs, 80); setTimeout(rs, 300);
-    });
-  })();
   function mlUpdateAircraft(t) {
     if (!mlReady || !mlMarker) return;
     let lat, lon, hdgDeg;
@@ -4531,7 +4593,7 @@ function gaugeVSI(cv, fpm){
     setN('nATT', t.state.phi * 57.3);
     setN('nHDG', t.state.psi * 57.3);
     setN('nTC', t.state.phi * 40);
-    if (now - gaugeLast > 45) { gaugeLast = now; try { drawGauges(t); levSync(); } catch (err) { console.error('relojes:', err); } }
+    if (now - gaugeLast > 45) { gaugeLast = now; try { drawGauges(t); levSync(); } catch (e) { console.error('relojes:', e); } }
     const onlyExt = document.body.classList.contains('view-ext');
     const onlyCock = document.body.classList.contains('view-cockpit');
     if (!onlyExt) {
@@ -4551,7 +4613,7 @@ function gaugeVSI(cv, fpm){
     requestAnimationFrame(loop);
   }
   try {
-    const p = JSON.parse(localStorage.getItem('avionPrefs') || 'null');
+    const p = JSON.parse(localStorage.getItem('escuelaPrefs') || 'null');
     if (p) {
       if (p.typeId) loadType(p.typeId);
       if (p.fidelity) setFid(p.fidelity);
